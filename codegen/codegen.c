@@ -52,34 +52,3 @@ const char* reg_to_string(Register reg) {
     }
 }
 
-int main() {
-    printf("Code Generator basliyor...\n\n");
-
-    CodeGen *cg = create_codegen("output.asm");
-
-    fprintf(cg->output, "section .text\n");
-    fprintf(cg->output, "global main\n\n");
-    printf("section .text\n");
-    printf("global main\n\n");
-
-    emit_label(cg, "main");
-    emit(cg, "push rbp");
-    emit(cg, "mov rbp, rsp");
-
-    // x: integer = 42
-    emit(cg, "; x: integer = 42");
-    emit(cg, "mov rax, 42");
-    emit(cg, "mov [rbp-8], rax");
-
-    // return x
-    emit(cg, "; return x");
-    emit(cg, "mov rax, [rbp-8]");
-    emit(cg, "pop rbp");
-    emit(cg, "ret");
-
-    destroy_codegen(cg);
-
-    printf("\nAssembly kodu 'output.asm' dosyasina yazildi!\n");
-    printf("Code Generator basarili!\n");
-    return 0;
-}

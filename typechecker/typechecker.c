@@ -50,32 +50,3 @@ const char* type_to_string(DataType type) {
         default:           return "unknown";
     }
 }
-
-int main() {
-    printf("Type Checker basliyor...\n");
-
-    SymbolTable *table = create_symbol_table(NULL);
-
-    add_symbol(table, "x", TYPE_INTEGER);
-    add_symbol(table, "b", TYPE_BOOLEAN);
-    add_symbol(table, "c", TYPE_CHAR);
-
-    Symbol *sym = lookup_symbol(table, "x");
-    if (sym) {
-        printf("'x' bulundu, tipi: %s\n", type_to_string(sym->type));
-    }
-
-    sym = lookup_symbol(table, "b");
-    if (sym) {
-        printf("'b' bulundu, tipi: %s\n", type_to_string(sym->type));
-    }
-
-    sym = lookup_symbol(table, "z");
-    if (!sym) {
-        printf("HATA: 'z' tanimlanmamis degisken!\n");
-    }
-
-    destroy_symbol_table(table);
-    printf("Type Checker basarili!\n");
-    return 0;
-}
