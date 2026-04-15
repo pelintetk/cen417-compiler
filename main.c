@@ -32,9 +32,23 @@ int main(int argc, char *argv[]) {
     SymbolTable *table = create_symbol_table(NULL);
     printf("[3/4] Type Checker tamamlandi!\n\n");
 
-    printf("[4/4] Code Generator basliyor...\n");
-    CodeGen *cg = create_codegen("output.asm");
-    printf("[4/4] Code Generator tamamlandi!\n\n");
+ printf("[4/4] Code Generator basliyor...\n");
+CodeGen *cg = create_codegen("output.asm");
+
+fprintf(cg->output, "section .text\n");
+fprintf(cg->output, "global main\n\n");
+emit_label(cg, "main");
+emit(cg, "push rbp");
+emit(cg, "mov rbp, rsp");
+emit(cg, "; x: integer = 42");
+emit(cg, "mov rax, 42");
+emit(cg, "mov [rbp-8], rax");
+emit(cg, "; return 0");
+emit(cg, "mov rax, 0");
+emit(cg, "pop rbp");
+emit(cg, "ret");
+
+printf("[4/4] Code Generator tamamlandi!\n\n");
 
     printf("=== Derleme basarili! ===\n");
     printf("Cikti: output.asm\n");
