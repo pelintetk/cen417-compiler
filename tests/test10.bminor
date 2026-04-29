@@ -1,0 +1,3 @@
+a: integer = 42;
+b: boolean = true;
+c: integer = 7;
