@@ -35,6 +35,8 @@ int main(int argc, char *argv[]) {
  printf("[4/4] Code Generator basliyor...\n");
 CodeGen *cg = create_codegen("output.asm");
 
+fprintf(cg->output, "section .data\n");
+fprintf(cg->output, "fmt db \"%%d\", 10, 0\n\n");
 fprintf(cg->output, "section .text\n");
 fprintf(cg->output, "global main\n\n");
 emit_label(cg, "main");
@@ -43,6 +45,33 @@ emit(cg, "mov rbp, rsp");
 emit(cg, "; x: integer = 42");
 emit(cg, "mov rax, 42");
 emit(cg, "mov [rbp-8], rax");
+
+emit(cg, "; if (x == 42)");
+emit(cg, "mov rax, [rbp-8]");
+emit(cg, "cmp rax, 42");
+emit(cg, "jne else_label");
+emit(cg, "; if blogu");
+emit(cg, "mov rax, 1");
+emit(cg, "jmp end_label");
+emit_label(cg, "else_label");
+emit(cg, "; else blogu");
+emit(cg, "mov rax, 0");
+emit_label(cg, "end_label");
+
+emit(cg, "; for dongusu");
+emit_label(cg, "for_start");
+emit(cg, "mov rax, [rbp-8]");
+emit(cg, "cmp rax, 0");
+emit(cg, "jle for_end");
+emit(cg, "sub rax, 1");
+emit(cg, "mov [rbp-8], rax");
+emit(cg, "jmp for_start");
+emit_label(cg, "for_end");
+emit(cg, "; print x");
+emit(cg, "mov rdi, fmt");
+emit(cg, "mov rsi, [rbp-8]");
+emit(cg, "xor rax, rax");
+emit(cg, "call printf");
 emit(cg, "; return 0");
 emit(cg, "mov rax, 0");
 emit(cg, "pop rbp");
